@@ -3,12 +3,29 @@ import prisma from '../../libs/prismadb/index.js';
 //GET ALL TODOS
 export const getTodos = async (req, res) => {
     try {
-        const todos = await prisma.todo.findMany();
-        res.status(200).json(todos);
+        const page = parseInt(req.query.page) || 1; // İstekten gelen sayfa numarası, varsayılan olarak 1
+        const perPage = 5; // Her sayfada kaç veri gösterileceği
+
+        const totalCount = await prisma.todo.count(); // Toplam todo sayısı
+
+        const totalPages = Math.ceil(totalCount / perPage); // Toplam sayfa sayısı
+        const offset = (page - 1) * perPage; // Sorgu için offset değeri
+
+        const todos = await prisma.todo.findMany({
+            skip: offset,
+            take: perPage,
+        });
+
+        res.status(200).json({
+            todos,
+            totalPages,
+            currentPage: page,
+        });
     }catch (err) {
         console.log("[GET TODOS ERROR]", err);
     }
 }
+
 
 // GET A TODO
 export const getTodo = async (req, res) => {
@@ -36,9 +53,9 @@ export const createTodo = async (req, res) =>  {
     try {
         const {description, keyword} = await req.body;
 
-        const todos = await prisma.todo.findMany();
-
-        const no = todos.length + 1;
+        const todos = await prisma.todo.count();
+        console.log(todos);
+        const no = todos + 1;
 
         const newTodo = await prisma.todo.create({
             data: {

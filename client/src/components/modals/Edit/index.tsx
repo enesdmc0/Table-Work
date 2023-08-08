@@ -24,6 +24,7 @@ const Edit: React.FC<Props> = ({open, setOpen, editId, setEditId}) => {
                 }
                 const data = await response.json()
                 setEditData(data)
+                fetchData()
             }catch(err: unknown) {
                 console.log(err)
             }

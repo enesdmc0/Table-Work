@@ -2,7 +2,7 @@ import React from 'react'
 import { Datas } from '../../../App'
 
 interface Props {
-    datas: Datas[]
+    datas: Datas[];
 }
 
 const TableBody: React.FC<Props> = ({datas}) => {
@@ -19,8 +19,6 @@ const TableBody: React.FC<Props> = ({datas}) => {
             if (!response.ok) {
                 throw new Error("Fetch error");
             }
-
-
         } catch (err: unknown) {
             console.log(err)
         }
@@ -29,19 +27,19 @@ const TableBody: React.FC<Props> = ({datas}) => {
 
     return (
         <tbody className="divide-y divide-gray-200">
-            {datas.map((person) => (
-                <tr key={person.id}>
+            {datas?.map((item) => (
+                <tr key={item.id}>
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-                        <input checked={person.selected} onChange={() => handleChange(person.id, person.selected)}
+                        <input checked={item.selected} onChange={() => handleChange(item.id, item.selected)}
                             name="comments"
                             type="checkbox"
                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.no}</td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.keyword}</td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.description}</td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.createdAt}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{item.no}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{item.keyword}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{item.description}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{item.createdAt}</td>
                 </tr>
             ))}
         </tbody>

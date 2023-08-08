@@ -9,9 +9,11 @@ interface Props {
     setEditId: (id: string) => void;
     setEditModal: React.Dispatch<React.SetStateAction<boolean>>;
     setCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
+    totalPage: number;
+    currentPage: number;
 }
 
-const Header: React.FC<Props> = ({ datas, setEditId, setEditModal, setCreateModal }) => {
+const Header: React.FC<Props> = ({ datas, setEditId, setEditModal, setCreateModal, totalPage, currentPage }) => {
 
     const handleDelete = async () => {
         const filteredData = datas?.filter(data => data.selected)
@@ -32,6 +34,7 @@ const Header: React.FC<Props> = ({ datas, setEditId, setEditModal, setCreateModa
                 }
             });
             toast.success("Data Deleted")
+            fetchData()
         } catch (error: unknown) {
             console.log(error);
         }
@@ -67,7 +70,11 @@ const Header: React.FC<Props> = ({ datas, setEditId, setEditModal, setCreateModa
                     </div>
                 </div>
                 <div className="mt-4 flex md:ml-4 md:mt-0 gap-3">
-                    <div>{datas.length}</div>
+                    <div>
+                        <div>Current Page: {currentPage}</div>
+                        <div>Total Page{totalPage}</div>
+                    <div>{datas?.length}</div>
+                    </div>
                     <Button label="New Add" icon={BsPlus} type="button" onClick={() => setCreateModal(prev => !prev)} color="#93c5fd" />
                     <Button label="Edit" icon={AiOutlineEdit} type="button" onClick={handleEdit} color="#86efac" />
                     <Button label="Delete" icon={AiOutlineDelete} type="button" onClick={handleDelete} color="#fca5a5" />

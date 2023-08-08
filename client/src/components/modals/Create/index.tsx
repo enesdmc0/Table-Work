@@ -8,9 +8,10 @@ import toast from "react-hot-toast";
 interface Props {
     open: boolean;
     setOpen: (open: boolean) => void;
+    fetchData: () => void;
 }
 
-const Create: React.FC<Props> = ({setOpen, open}) => {
+const Create: React.FC<Props> = ({setOpen, open, fetchData}) => {
     const {register, handleSubmit, reset, formState: {errors}} = useForm<FieldValues>({
         defaultValues: {
             keyword: "",
@@ -31,6 +32,7 @@ const Create: React.FC<Props> = ({setOpen, open}) => {
         setOpen(false)
         reset()
         toast.success("Data Created")
+        fetchData()
        }catch(err) {
         console.log(err)
        }
