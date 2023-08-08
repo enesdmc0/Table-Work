@@ -10,7 +10,7 @@ router.get("/:id", getTodo);
 // CREATE A TODO
 router.post("/", createTodo);
 // DELETE A TODO
-router.delete("/", deleteTodo);
+router.delete("/:id", deleteTodo);
 // UPDATE A TODO
 router.put("/:id", updateTodo);
 

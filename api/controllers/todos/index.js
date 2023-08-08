@@ -56,16 +56,14 @@ export const createTodo = async (req, res) =>  {
 //DELETE A TODO
 export const deleteTodo = async (req, res) =>  {
     try{
-        const {ids} = await req.body;
-        if(!ids) {
-            return res.status(500).json("ID or IDS is required")
+        const {id} = await req.params;
+        if(!id) {
+            return res.status(500).json("ID is required")
         }
 
-        await prisma.todo.deleteMany({
+        await prisma.todo.delete({
             where: {
-                id: {
-                    in: ids
-                }
+                id
             }
         })
         res.status(200).json("Todo deleted")
@@ -83,7 +81,7 @@ export const updateTodo = async (req, res) =>  {
             return res.status(500).json("ID is required")
         }
 
-        const {description, keyword} = await req.body;
+        const {description, keyword, selected} = await req.body;
 
         const updatedTodo = await prisma.todo.update({
             where: {
@@ -91,7 +89,8 @@ export const updateTodo = async (req, res) =>  {
             },
             data: {
                 description,
-                keyword
+                keyword,
+                selected: !selected
             }
         })
         res.status(200).json(updatedTodo)

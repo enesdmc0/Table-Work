@@ -25,7 +25,7 @@ mongoose.connection.on("disconnected", () => {
 app.use(express.json());
 app.use("/api/todos", routes)
 
-app.listen("8880", () => {
+app.listen("8800", () => {
     connectDB();
     console.log("Backend is running!")
 });

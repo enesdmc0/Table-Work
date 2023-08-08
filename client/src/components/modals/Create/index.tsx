@@ -2,18 +2,15 @@ import Input from "../../Input";
 import Modal from "../Modal";
 import React from "react";
 import {useForm, SubmitHandler, FieldValues} from "react-hook-form"
-import {Datas} from "../../../App.tsx";
 import toast from "react-hot-toast";
 
 
 interface Props {
     open: boolean;
     setOpen: (open: boolean) => void;
-    datas: Datas[]
-    setDatas: (datas: Datas[]) => void;
 }
 
-const Create: React.FC<Props> = ({setOpen, open, datas, setDatas}) => {
+const Create: React.FC<Props> = ({setOpen, open}) => {
     const {register, handleSubmit, reset, formState: {errors}} = useForm<FieldValues>({
         defaultValues: {
             keyword: "",
@@ -21,17 +18,23 @@ const Create: React.FC<Props> = ({setOpen, open, datas, setDatas}) => {
         }
     })
 
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        setDatas([...datas, {
-            no: "10",
-            createdAt: "10.10.2021",
-            selected: false,
-            keyword: data.keyword,
-            description: data.description,
-        }])
+    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+       try{
+        const response = await fetch("http://localhost:8800/api/todos", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        })
+        if (!response.ok) {
+            throw new Error("Fetch error");
+        }
         setOpen(false)
         reset()
         toast.success("Data Created")
+       }catch(err) {
+        console.log(err)
+       }
+       
     }
 
 

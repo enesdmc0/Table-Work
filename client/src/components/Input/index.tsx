@@ -10,10 +10,11 @@ interface Props {
     name: string;
     required?: boolean;
     id: string
+    defaultValue?: string
 
 }
 
-const Input: React.FC<Props> = ({label, name, id, required, placeholder, type, errors, register}) => {
+const Input: React.FC<Props> = ({label, name, defaultValue , id, required, placeholder, type, errors, register}) => {
     return (
         <div>
             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
@@ -27,6 +28,7 @@ const Input: React.FC<Props> = ({label, name, id, required, placeholder, type, e
                     id={id}
                     className={`${errors ? "ring-red-300" : "ring-gray-300"} block w-full rounded-md border-0 py-1.5 px-2 pr-10 ring-1 ring-inset sm:text-sm sm:leading-6`}
                     placeholder={placeholder}
+                    defaultValue={defaultValue}
                 />
             </div>
             {errors && <p className="mt-2 text-sm text-red-600" id="email-error">
