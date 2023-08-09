@@ -1,5 +1,6 @@
 import React from 'react';
-import {FieldValues, UseFormRegister} from "react-hook-form";
+import { FieldValues, UseFormRegister} from "react-hook-form";
+
 
 interface Props {
     label?: string;
@@ -17,7 +18,7 @@ interface Props {
 const Input: React.FC<Props> = ({label, name, defaultValue , id, required, placeholder, type, errors, register}) => {
     return (
         <div>
-            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+            <label htmlFor="email" className="block text-sm font-medium leading-6 text-[#9B9B9B]">
                 {label}
             </label>
             <div className="relative mt-2">
@@ -26,7 +27,7 @@ const Input: React.FC<Props> = ({label, name, defaultValue , id, required, place
                     type={type}
                     name={name}
                     id={id}
-                    className={`${errors ? "ring-red-300" : "ring-gray-300"} block w-full rounded-md border-0 py-1.5 px-2 pr-10 ring-1 ring-inset sm:text-sm sm:leading-6`}
+                    className={`${errors ? "ring-red-300" : "ring-gray-300"} text-[#9B9B9B] block w-full bg-transparent outline-none  py-1.5 px-2 pr-10 border-b border-b-[#9B9B9B] sm:text-sm sm:leading-6`}
                     placeholder={placeholder}
                     defaultValue={defaultValue}
                 />

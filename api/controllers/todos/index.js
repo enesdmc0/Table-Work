@@ -3,24 +3,18 @@ import prisma from '../../libs/prismadb/index.js';
 //GET ALL TODOS
 export const getTodos = async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1; // İstekten gelen sayfa numarası, varsayılan olarak 1
-        const perPage = 5; // Her sayfada kaç veri gösterileceği
+        const page = parseInt(req.query.page) || 1;
+        const itemsPerPage = parseInt(req.query.limit) || 5;
 
-        const totalCount = await prisma.todo.count(); // Toplam todo sayısı
-
-        const totalPages = Math.ceil(totalCount / perPage); // Toplam sayfa sayısı
-        const offset = (page - 1) * perPage; // Sorgu için offset değeri
+        const totalDatas = await prisma.todo.count();
+        const totalPages = Math.ceil(totalDatas / itemsPerPage);
 
         const todos = await prisma.todo.findMany({
-            skip: offset,
-            take: perPage,
+            skip: (page - 1) * itemsPerPage ,
+            take: itemsPerPage,
         });
 
-        res.status(200).json({
-            todos,
-            totalPages,
-            currentPage: page,
-        });
+        res.status(200).json({ todos, totalPages, totalDatas });
     }catch (err) {
         console.log("[GET TODOS ERROR]", err);
     }
@@ -53,15 +47,22 @@ export const createTodo = async (req, res) =>  {
     try {
         const {description, keyword} = await req.body;
 
-        const todos = await prisma.todo.count();
-        console.log(todos);
-        const no = todos + 1;
+        const highestNoTodo = await prisma.todo.findFirst({
+            orderBy: {
+                no: 'desc'
+            }
+        });
+        let no = 1;
+
+        if (highestNoTodo) {
+            no = highestNoTodo.no + 1;
+        }
 
         const newTodo = await prisma.todo.create({
             data: {
                 description,
                 keyword,
-                no: no.toString()
+                no
             }
         })
         res.status(200).json(newTodo)
@@ -99,6 +100,7 @@ export const updateTodo = async (req, res) =>  {
         }
 
         const {description, keyword, selected} = await req.body;
+
 
         const updatedTodo = await prisma.todo.update({
             where: {

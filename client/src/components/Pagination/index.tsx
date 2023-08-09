@@ -1,38 +1,34 @@
-import React from 'react'
-import { AiOutlineDoubleLeft, AiOutlineDoubleRight, AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import ReactPaginate from "react-paginate";
+import {useAtomValue, useSetAtom} from "jotai";
+import {currentPageAtom, totalPageAtom} from "../../atoms/Atom";
+import {AiOutlineLeft, AiOutlineRight} from "react-icons/ai";
 
-interface Props {
-  activePage: number;
-  setActivePage: React.Dispatch<React.SetStateAction<number>>;
-}
+const Pagination = () => {
+    const setCurrentPage = useSetAtom(currentPageAtom)
+    const totalPage = useAtomValue(totalPageAtom)
 
-const Pagination: React.FC<Props> = ({ activePage, setActivePage }) => {
-
-  const handleIncrement = () => {
-    setActivePage((prev: number) => prev + 1)
-  }
-
-  const handleDecrement = () => {
-    setActivePage((prev: number) => prev - 1)
-  }
-
-  return (
-    <>
-      <div className="flex items-center justify-end gap-5">
-        <div>
-          <AiOutlineDoubleLeft className="inline-block h-5 w-5 text-gray-400" aria-hidden="true" />
-          <AiOutlineLeft onClick={handleDecrement} className="inline-block h-5 w-5 text-gray-400" aria-hidden="true" />
+    const handlePageChange = ({selected}: { selected: number }) => {
+        setCurrentPage(selected);
+    };
+    return (
+        <div className="bg-[#2B303B] text-[#9B9B9B] font-semibold rounded-md">
+            <ReactPaginate className={"flex items-center justify-center py-2 gap-5 mt-5"}
+                           previousLabel={<AiOutlineLeft
+                               className="inline-block rounded-full h-6 w-6 border border-[#9B9B9B] hover:bg-[#9B9B9B] transition-all duration-200"
+                               aria-hidden="true"/>}
+                           nextLabel={<AiOutlineRight
+                               className="inline-block rounded-full h-6 w-6 border border-[#9B9B9B] hover:bg-[#9B9B9B] transition-all duration-200"
+                               aria-hidden="true"/>}
+                           breakLabel="..."
+                           pageCount={totalPage}
+                           marginPagesDisplayed={2}
+                           pageRangeDisplayed={5}
+                           onPageChange={handlePageChange}
+                           containerClassName="pagination"
+                           activeClassName="rounded-full bg-[#8BAB49] text-white px-3 py-1 transition-all duration-200"
+            />
         </div>
-        <div>
-          Sayfa 1 - Toplam 1
-        </div>
-        <div>
-          <AiOutlineRight onClick={handleIncrement} className="inline-block h-5 w-5 text-gray-400" aria-hidden="true" />
-          <AiOutlineDoubleRight  className="inline-block h-5 w-5 text-gray-400" aria-hidden="true" />
-        </div>
-      </div>
-    </>
-  )
+    )
 }
 
 export default Pagination

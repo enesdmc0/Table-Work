@@ -16,7 +16,7 @@ const Button: React.FC<Props> = ({icon: Icon, color, onClick, type, label, disab
             disabled={disabled}
             onClick={onClick}
             type={type}
-            className={` ${color === "#ffffff" ? "text-black" : "text-white"} inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold border shadow-sm`}
+            className={` ${color === "#ffffff" ? "text-black" : "text-white"} hover:opacity-80  inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold shadow-sm`}
             style={{backgroundColor: color}}
         >
 

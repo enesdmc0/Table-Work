@@ -8,6 +8,14 @@ body {
     height: 100%;
 }
 
+html{
+    background-color: #22262F;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;

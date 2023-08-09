@@ -6,7 +6,7 @@ const TableHeader = () => {
             <tr>
                 {header.map((item, index) => (
                     <th key={index} scope="col"
-                    className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                    className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white bg-[#8BAB49]/70 sm:pl-0  ">
                     {item}
                 </th>
                 ))}

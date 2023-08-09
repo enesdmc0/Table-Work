@@ -1,17 +1,17 @@
 import Input from "../../Input";
 import Modal from "../Modal";
-import React from "react";
 import {useForm, SubmitHandler, FieldValues} from "react-hook-form"
 import toast from "react-hot-toast";
+import {useAtom, useSetAtom} from "jotai";
+import {createModal, datasAtom, totalDatasAtom} from "../../../atoms/Atom";
 
 
-interface Props {
-    open: boolean;
-    setOpen: (open: boolean) => void;
-    fetchData: () => void;
-}
 
-const Create: React.FC<Props> = ({setOpen, open, fetchData}) => {
+
+const Create = () => {
+    const [open, setOpen] = useAtom(createModal)
+    const setDatas = useSetAtom(datasAtom)
+    const setTotalDatas = useSetAtom(totalDatasAtom)
     const {register, handleSubmit, reset, formState: {errors}} = useForm<FieldValues>({
         defaultValues: {
             keyword: "",
@@ -20,23 +20,25 @@ const Create: React.FC<Props> = ({setOpen, open, fetchData}) => {
     })
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-       try{
-        const response = await fetch("http://localhost:8800/api/todos", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
-        })
-        if (!response.ok) {
-            throw new Error("Fetch error");
+        try {
+            const response = await fetch("http://localhost:8800/api/todos", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data)
+            })
+            if (!response.ok) {
+                throw new Error("Fetch error");
+            }
+            const newTodo = await response.json();
+            setOpen(false)
+            reset()
+            setDatas((prevDatas) => [...prevDatas, newTodo]);
+            setTotalDatas((prevTotal) => prevTotal + 1);
+            toast.success("Data Created")
+        } catch (err) {
+            console.log(err)
         }
-        setOpen(false)
-        reset()
-        toast.success("Data Created")
-        fetchData()
-       }catch(err) {
-        console.log(err)
-       }
-       
+
     }
 
 

@@ -12,7 +12,7 @@ datasource db {
 
 model Todo {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  no          String   @unique
+  no          Int      @unique
   description String
   keyword     String
   selected    Boolean  @default(false)
